@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <title>Mon site VUE.JS</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+        <style>
+            label {
+                padding: 25px;
+                color: white;
+                font-weight: bold;
+            }
+            input {
+                border: none;
+                outline: none;
+                background-color: grey;
+                color: white;
+            }
+            .recherche {
+                background-color: #333;
+                margin-bottom: 5px;
+                
+            }
+        </style>
+    
+    </head>
+
+    <body>
+        <div id="app">
+            <!-- Afficher le rendu de app -->
+            <div class="title"><img width="50" src="https://settlersindia.com/uploads/old/Retail-Shop-Rent-New-Delhi.png"><h1>Mon épicerie</h1>
+            </div>
+            <div class="container">
+                <ul class="shopping">
+                    <!-- <div class="recherche">
+                        <label>Recherche</label> <input v-model="inputRecherche" type="text">
+                    </div> -->
+                    <li class="article" v-for="fruit in carteFruits">
+                        <div class="inStock" v-if="fruit.stock >= 1">En Stock x{{ fruit.stock }} </div>
+                        <div class="outStock" v-else>Rupture de stock</div><img v-bind:src="fruit.url">
+                        <div>{{ fruit.nom }} : {{ fruit.prix }} € </div>
+                        <button v-on:click="ajoutPanier(fruit)">Ajouter au panier</button>
+                    </li>
+                </ul>
+                <ul class="paiement">
+                    <li>
+                        <div class="panierContent" v-show="montrePanier == true">
+                            <h3>Mes produits :</h3>
+                            <p class="articlePanier" v-for="article in panier" v-show="article.stock >= 1">
+                                <img v-bind:src="article.url">
+                                {{ article.nom }} x{{ article.stock }} : {{ article.prix.toFixed(2) }} €
+                            </p>
+                            <p class="prixPanier">
+                                <img class="trash_icon" v-on:click="supprimePanier()" src="https://findicons.com/files/icons/1681/siena/256/trash.png">
+                                Total : {{ montantTotal.toFixed(2) }} €
+                            </p>
+                        </div>
+                        <p class="panierVide" v-show="montrePanier == false">Mon panier est vide<img src="http://www.lavalleedelalune.fr/wp-content/uploads/2015/05/petit-panier.png"></p>
+
+                    </li>
+                    <li>
+
+                    </li>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </body>
+
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                carteFruits: [
+                    { nom: "Pomme", prix: 2.11, stock: 0, url:"https://cdn-icons-png.flaticon.com/512/740/740922.png" },
+                    { nom: "Fraise", prix: 1.46, stock: 5, url:"https://cdn-icons-png.flaticon.com/512/590/590685.png" },
+                    { nom: "Pêche", prix: 3.21, stock: 2, url:"https://cdn.icon-icons.com/icons2/1158/PNG/512/1487086632-fruit-peach_81589.png" },
+                    { nom: "Ananas", prix: 1.20, stock: 0, url: "https://cdn-icons-png.flaticon.com/512/3367/3367210.png" },
+                    { nom: "Melon", prix: 5.01, stock: 1, url:"https://cdn-icons-png.flaticon.com/512/765/765556.png" },
+                    { nom: "Mangue", prix: 2.38, stock: 9, url:"https://cdn-icons-png.flaticon.com/512/700/700804.png" },
+                    { nom: "Kiwi", prix: 2.44, stock: 0, url:"https://cdn-icons-png.flaticon.com/512/1041/1041337.png" },
+                    { nom: "Banane", prix: 3.12, stock: 3, url:"https://cdn-icons-png.flaticon.com/512/714/714197.png" },
+                ],
+                panier: [
+                    { nom: "Pomme", prix: 0.00, stock: 0, url:"https://cdn-icons-png.flaticon.com/512/740/740922.png" },
+                    { nom: "Fraise", prix: 0.00, stock: 0, url:"https://cdn-icons-png.flaticon.com/512/590/590685.png" },
+                    { nom: "Pêche", prix: 0.00, stock: 0, url:"https://cdn.icon-icons.com/icons2/1158/PNG/512/1487086632-fruit-peach_81589.png" },
+                    { nom: "Ananas", prix: 0.00, stock: 0, url: "https://cdn-icons-png.flaticon.com/512/3367/3367210.png" },
+                    { nom: "Melon", prix: 0.00, stock: 0, url:"https://cdn-icons-png.flaticon.com/512/765/765556.png" },
+                    { nom: "Mangue", prix: 0.00, stock: 0, url:"https://cdn-icons-png.flaticon.com/512/700/700804.png" },
+                    { nom: "Kiwi", prix: 0.00, stock: 0, url:"https://cdn-icons-png.flaticon.com/512/1041/1041337.png" },
+                    { nom: "Banane", prix: 0.00, stock: 0, url:"https://cdn-icons-png.flaticon.com/512/714/714197.png" }
+                    ],
+                inputRecherche: ""
+
+            },
+            computed: {
+                montrePanier() {
+                    for (let i = 0; i < this.panier.length; i++) {
+                        if (this.panier[i].stock > 0) {
+                        return true
+                    }
+                    } return false
+                },
+                montantTotal() {
+                    let prixTotal = 0
+                    for (let i = 0; i < this.panier.length; i++) {
+                        prixTotal += this.panier[i].prix
+                    }
+                    return prixTotal
+                }
+            },
+            methods: {
+                ajoutPanier(fruit) {
+                    if (fruit.stock >= 1) {
+                        this.panier.forEach(produit => {
+                            if (produit.nom == fruit.nom) {
+                                produit.stock++
+                                produit.prix += fruit.prix
+                                fruit.stock--
+                            }
+                        })
+                    }
+                },
+                supprimePanier() {
+                    this.carteFruits.forEach((fruit, i) =>{
+                        fruit.stock += this.panier[i].stock 
+                        this.panier[i].stock = 0
+                        this.panier[i].prix = 0.00
+                    })
+
+                },
+                searchTest(fruit) {
+                    
+                    if (this.inputRecherche == "") {
+                        return true
+                    }
+                    for (let j = 0; j < this.inputRecherche.length; j++) {
+                        if (this.inputRecherche[j] == fruit.nom[j]) {
+                            return true
+                            } else {
+                                return false
+                            }
+                            }
+
+                        }}
+                    })
+</script>
+</html>

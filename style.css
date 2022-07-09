@@ -1,0 +1,119 @@
+*, ::before, ::after {
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    background-color: #333;
+    color: #FFF;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+.container {
+    display: grid;
+    grid-template-columns: 70% 30%;
+}
+.inStock {
+    background-color: rgba(22, 160, 22, 0.705);
+    border-radius: 8px;
+    font-size: 12px;
+}
+.outStock {
+    background-color: rgba(221, 35, 72, 0.753); 
+    border-radius: 8px;
+    font-size: 12px;
+}
+.inStock, .outStock {
+    padding: 10px;
+    font-size: 0.9rem;
+    height: auto;
+    text-align: center;
+}
+.article * {
+    margin: 10px;
+}
+.article button {
+    height: 45px;
+    background-color: lightblue;
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+}
+.article button:hover {
+    transform: scale(1.04);
+}
+.article img {
+    width: 60px;
+    height: 60px;
+}
+.article {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    border: 2px solid lightblue;
+    border-radius: 10px;
+}
+.paiement img {
+    width: 20px;
+    margin-right: 10px;
+}
+.shopping {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr)
+}
+.shopping, .paiement {
+    list-style-type: none;
+}
+.prixPanier {
+    border-top: 2px solid #fff;
+    width: 70%;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 10px;
+}
+.articlePanier {
+    margin: 0 0 10px 10px;
+    display: flex;
+    width: 70%;
+    align-items: center;
+    justify-content: flex-end;
+}
+.trash_icon:hover {
+    transform: scale(1.068);
+}
+.panierVide img {
+    width: 40px;
+}
+.panierVide {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.panierContent h3 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 70%;
+    justify-content: flex-end;
+    border-bottom: 2px solid #FFF;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+.panierContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.title {
+    display: flex;
+    align-items: center;
+    margin: 20px 20px 20px 20px;
+}
+.title h1 {
+    text-transform: uppercase
+}
